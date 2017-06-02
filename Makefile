@@ -13,9 +13,9 @@ OBJS  = $(foreach obj,$(SRCS:.c=.o),$(obj))
 EXT_SRCS = $(filter-out $(TSRC),$(wildcard extension/*.c) $(wildcard extension/clib/*.c) $(wildcard common/*.c)) $(wildcard common/clib/*.c) $(TSRC)
 EXT_OBJS = $(foreach obj,$(EXT_SRCS:.c=.o),$(obj))
 
-default: luakit luakit.1.gz luakit.so
+all: options newline default apidoc
 
-all: options newline luakit luakit.1.gz luakit.so apidoc
+default: luakit luakit.1.gz luakit.so
 
 options:
 	@echo luakit build options:
