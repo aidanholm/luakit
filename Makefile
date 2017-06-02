@@ -68,8 +68,10 @@ luakit.1: luakit.1.in
 luakit.1.gz: luakit.1
 	@gzip -c $< > $@
 
-apidoc: luakit luakit.so
-	rm -rf doc/apidocs
+clean-apidoc:
+	-rm -rf doc/apidocs
+
+apidoc: clean-apidoc luakit luakit.so
 	mkdir doc/apidocs
 	./luakit --log=error -c build-utils/docgen/process.lua > doc/apidocs/module_info.lua
 	$(LUA_BIN_NAME) ./build-utils/docgen/makedoc.lua
@@ -79,9 +81,9 @@ doc: buildopts.h $(THEAD) $(TSRC)
 	doxygen -s doc/luakit.doxygen
 
 clean:
-	rm -rf doc/apidocs doc/html luakit $(OBJS) $(EXT_OBJS) $(TSRC) $(THEAD) buildopts.h luakit.1
+	-rm -rf doc/apidocs doc/html luakit $(OBJS) $(EXT_OBJS) $(TSRC) $(THEAD) buildopts.h luakit.1
 
-install:
+install: all
 	install -d $(INSTALLDIR)/share/luakit/
 	install -d $(DOCDIR)
 	install -m644 README.md AUTHORS COPYING* $(DOCDIR)
@@ -114,8 +116,8 @@ install:
 	install -m644 luakit.1.gz $(MANPREFIX)/man1/
 
 uninstall:
-	rm -rf $(INSTALLDIR)/bin/luakit $(INSTALLDIR)/share/luakit $(MANPREFIX)/man1/luakit.1
-	rm -rf /usr/share/applications/luakit.desktop /usr/share/pixmaps/luakit.png
+	-rm -rf $(INSTALLDIR)/bin/luakit $(INSTALLDIR)/share/luakit $(MANPREFIX)/man1/luakit.1 $(DOCDIR)
+	-rm -rf /usr/share/applications/luakit.desktop /usr/share/pixmaps/luakit.png
 
 tests/util.so: tests/util.c Makefile
 	$(CC) -fpic $(CFLAGS) $(CPPFLAGS) -shared $(LDFLAGS) $< -o $@
