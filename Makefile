@@ -121,4 +121,4 @@ run-tests: luakit luakit.so tests/util.so
 	@$(LUA_BIN_NAME) tests/run_test.lua
 
 newline: options;@echo
-.PHONY: all clean options install newline apidoc doc default
+.PHONY: all clean options install newline apidoc doc
